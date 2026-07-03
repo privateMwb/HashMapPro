@@ -87,6 +87,27 @@ target_link_libraries(
 )
 
 
+# ============================================================================
+# Examples
+# ============================================================================
+
+# Build every example in the examples/ directory.
+file(GLOB EXAMPLE_SOURCES CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/examples/*.cpp"
+)
+
+foreach(example ${EXAMPLE_SOURCES})
+    get_filename_component(target "${example}" NAME_WE)
+
+    add_executable(${target} "${example}")
+
+    target_link_libraries(
+        ${target}
+        PRIVATE
+        HashMapPro
+    )
+endforeach()
+
 
 # ============================================================================
 # Installation
