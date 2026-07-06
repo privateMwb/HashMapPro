@@ -4,44 +4,41 @@
 [![Status](https://img.shields.io/badge/status-learning%20project-green)](https://github.com/privateMwb/HashMapPro)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A custom C++ hash map implementation built for learning associative container design, separate chaining, hashing strategy, and performance benchmarking against `std::unordered_map`.
+**HashMapPro** is a from-scratch, `std::unordered_map`-compatible associative container written in modern C++23. It was built as a deep dive into hash table internals — separate chaining, bucket indexing, load-factor-driven rehashing, and performance benchmarking against the standard library.
 
 ---
 
 ## Table of Contents
 
 - [Overview](#overview)
-- [Motivation / Goals](#motivation--goals)
+- [Motivation](#motivation)
 - [Features](#features)
+- [Quick Start](#quick-start)
+- [Core API](#core-api)
 - [Design Overview](#design-overview)
 - [Complexity](#complexity)
-- [Quick Example](#quick-example)
-- [Core API](#core-api)
-- [Benchmark Results](#benchmark-results)
+- [Benchmarks](#benchmarks)
 - [Project Structure](#project-structure)
-- [Build Instructions](#build-instructions)
-- [Notes](#notes)
+- [Building from Source](#building-from-source)
+- [Known Limitations](#known-limitations)
 - [License](#license)
 
 ---
 
 ## Overview
 
-HashMapPro (`HashMap`) is an associative container implemented from scratch in modern C++ (C++23), built as a `std::unordered_map`-compatible key/value store.
-It focuses on understanding how hash tables work internally, including separate chaining, bucket indexing, load-factor-driven rehashing, and iterator design over a bucket-and-chain layout.
+`HashMapPro::HashMap` is an associative container built as a `std::unordered_map`-compatible key/value store. It focuses on understanding how hash tables work internally:
 
-It also includes:
+- Separate chaining for collision resolution
+- Bucket indexing with load-factor-driven rehashing
+- Iterator design over a two-level bucket-and-chain layout
+- Exception-safe copy construction with commit/rollback semantics
 
-- Bidirectional iterators over buckets and chains, with const and reverse variants
-- Pluggable hashing via a `Hash` template parameter, defaulting to `std::hash<K>`
-- Automatic growth via load-factor-triggered rehashing
-- Exception-safe copy construction and copy assignment
-- Benchmark suite comparing against `std::unordered_map`
-- Unit tests for correctness validation
+On top of this foundation, HashMap adds bidirectional and reverse iterators, pluggable hashing, and a benchmark suite comparing every operation against `std::unordered_map`.
 
 ---
 
-## Motivation / Goals
+## Motivation
 
 This project was built to understand:
 
@@ -50,117 +47,31 @@ This project was built to understand:
 - Iterator design over a two-level structure (buckets + linked chains)
 - Exception safety during copy construction and assignment (commit/rollback)
 - Move semantics for a heap-owning container
-- Performance benchmarking vs `std::unordered_map`
+- Performance benchmarking vs. `std::unordered_map`
 
 ---
 
 ## Features
 
-- Separate chaining with singly-linked nodes per bucket
-- O(1) average-case `find`, `insert`, `erase`, `contains`
-- Automatic rehashing when the load factor exceeds `0.75`
-- Bidirectional `iterator` / `const_iterator` over the full table
-- `reverse_iterator` / `const_reverse_iterator` via `std::reverse_iterator`
-- `operator[]` with default-value insertion, matching `std::unordered_map` semantics
-- `at()` with `std::out_of_range` on a missing key, const and non-const overloads
-- `update()` for explicit existing-key assignment, distinct from `insert()`
-- Pluggable `Hash` template parameter for custom key types
-- Deep-copying copy constructor/assignment with strong rollback on allocation failure
-- Move constructor/assignment that leave the source in a valid empty state
+| Feature | Description |
+|---|---|
+| Separate chaining | Singly-linked nodes per bucket for collision resolution |
+| O(1) average-case operations | `find`, `insert`, `erase`, `contains` all average O(1) |
+| Automatic rehashing | Triggered once the load factor exceeds `0.75` |
+| Bidirectional iterators | `iterator` / `const_iterator` over the full table |
+| Reverse iterators | `reverse_iterator` / `const_reverse_iterator` via `std::reverse_iterator` |
+| `operator[]` with default insertion | Matches `std::unordered_map` semantics on a missing key |
+| `at()` with bounds checking | Throws `std::out_of_range` on a missing key; const and non-const overloads |
+| Explicit `update()` | Assigns to an existing key without inserting on a miss, distinct from `insert()` |
+| Pluggable hashing | Custom `Hash` template parameter for user-defined key types |
+| Exception-safe deep copy | Copy constructor/assignment roll back cleanly on allocation failure |
+| Safe move semantics | Move constructor/assignment leave the source in a valid empty state |
 
 ---
 
-## Design Overview
+## Quick Start
 
-HashMap uses an array of bucket head pointers (`Node<K, V>**`), where each bucket is the head of a singly-linked chain of nodes sharing the same bucket index.
-
-### Internal Structure
-
-```
-buckets (Node<K,V>**)
-  ↓
-[0] -> nullptr
-[1] -> Node(k,v) -> Node(k,v) -> nullptr
-[2] -> nullptr
-[3] -> Node(k,v) -> nullptr
-...
-```
-
-- `buckets`      → array of bucket head pointers
-- `bucketCount`  → number of buckets in the array
-- `elementCount` → number of stored key/value pairs
-- `hasher`       → the `Hash` instance used to compute bucket indices
-
-### Bucket Indexing
-
-A key's bucket is computed by hashing and reducing modulo the bucket count:
-
-```cpp
-std::size_t index = hasher(key) % bucketCount;
-```
-
-### Collision Resolution
-
-Collisions are resolved by chaining — colliding keys are linked within the same bucket via `Node::next`, and lookup walks the chain comparing keys with `operator==`.
-
-### Growth Strategy
-
-After each insertion, the load factor is checked against a fixed threshold:
-
-```cpp
-if (static_cast<double>(elementCount) / bucketCount > MAX_LOAD_FACTOR) {
-    rehash(bucketCount * 2);
-}
-```
-
-`rehash()` allocates a new bucket array and relinks every existing node into its new bucket — nodes are moved by pointer, not copied.
-
-### Iterator Design
-
-Iterators track four pieces of state: the current node, the bucket array, the current bucket index, and the bucket count. Forward iteration walks the current chain, then advances to the next non-empty bucket. Reverse iteration walks backward through prior buckets to find each chain's tail.
-
-### Exception Safety Model
-
-- `rehash()` builds the new bucket array before touching the old one — if allocation fails, the map is untouched
-- Copy construction and copy assignment insert into a `try`/`catch` block — on failure mid-copy, the partially built state is released and the exception is rethrown
-- Move construction and move assignment are `noexcept` — ownership transfer only, no allocation
-- `at()` throws `std::out_of_range` on a missing key; all other lookup operations are `noexcept`
-
----
-
-## Complexity
-
-### Time Complexity
-
-| Operation      | Complexity (avg) | Complexity (worst) | Notes                                   |
-| -------------- | ----------------- | ------------------- | ---------------------------------------- |
-| `insert`       | O(1)               | O(n)                 | Worst case under heavy collision         |
-| `find`         | O(1)               | O(n)                 | Chain walk within one bucket             |
-| `contains`     | O(1)               | O(n)                 | Delegates to `find`                      |
-| `at`           | O(1)               | O(n)                 | Throws on miss                           |
-| `operator[]`   | O(1)               | O(n)                 | Inserts default value on miss            |
-| `update`       | O(1)               | O(n)                 | No insertion on miss                     |
-| `erase`        | O(1)               | O(n)                 | Chain walk to unlink node                |
-| `clear`        | O(n)               | O(n)                 | Deletes every node                       |
-| `rehash`       | O(n)               | O(n)                 | Relinks every node into new buckets      |
-
-### Space Complexity
-
-- O(n) for stored elements, one heap-allocated `Node` per element
-- O(b) for the bucket array, where `b` is the current bucket count
-- O(1) additional metadata per `HashMap` instance
-
-### Notes
-
-- Each element incurs one heap allocation (`new Node<K, V>`) — no bulk/arena allocation
-- Rehashing relinks existing nodes by pointer; it does not copy or reallocate key/value storage
-- `capacity()` returns the current bucket count, not a byte capacity
-
----
-
-## Quick Example
-
-### Basic Usage
+### Basic usage
 
 ```cpp
 #include <HashMapPro/HashMap.h>
@@ -178,7 +89,7 @@ int main() {
 }
 ```
 
-### Safe Lookup
+### Safe lookup
 
 ```cpp
 #include <HashMapPro/HashMap.h>
@@ -221,7 +132,7 @@ int main() {
 }
 ```
 
-### Custom Hash
+### Custom hash
 
 ```cpp
 #include <HashMapPro/HashMap.h>
@@ -290,7 +201,7 @@ void clear();
 [[nodiscard]] bool contains(const K& key) const noexcept;
 ```
 
-### Capacity / State
+### Capacity & state
 
 ```cpp
 [[nodiscard]] std::size_t capacity() const noexcept;
@@ -314,14 +225,104 @@ const_reverse_iterator crend() const noexcept;
 
 ---
 
-## Benchmark Results
+## Design Overview
 
-Benchmarks compare `HashMap` against `std::unordered_map` across all operations.
-All times are total elapsed time for the listed iteration count.
+HashMap uses an array of bucket head pointers (`Node<K, V>**`), where each bucket is the head of a singly-linked chain of nodes sharing the same bucket index.
+
+### Internal layout
+
+```
+buckets (Node<K,V>**)
+  ↓
+[0] -> nullptr
+[1] -> Node(k,v) -> Node(k,v) -> nullptr
+[2] -> nullptr
+[3] -> Node(k,v) -> nullptr
+...
+```
+
+- **`buckets`** — array of bucket head pointers
+- **`bucketCount`** — number of buckets in the array
+- **`elementCount`** — number of stored key/value pairs
+- **`hasher`** — the `Hash` instance used to compute bucket indices
+
+### Bucket indexing
+
+A key's bucket is computed by hashing and reducing modulo the bucket count:
+
+```cpp
+std::size_t index = hasher(key) % bucketCount;
+```
+
+### Collision resolution
+
+Collisions are resolved by chaining — colliding keys are linked within the same bucket via `Node::next`, and lookup walks the chain comparing keys with `operator==`.
+
+### Growth strategy
+
+After each insertion, the load factor is checked against a fixed threshold:
+
+```cpp
+if (static_cast<double>(elementCount) / bucketCount > MAX_LOAD_FACTOR) {
+    rehash(bucketCount * 2);
+}
+```
+
+`rehash()` allocates a new bucket array and relinks every existing node into its new bucket — nodes are moved by pointer, not copied.
+
+### Iterator design
+
+Iterators track four pieces of state: the current node, the bucket array, the current bucket index, and the bucket count. Forward iteration walks the current chain, then advances to the next non-empty bucket. Reverse iteration walks backward through prior buckets to find each chain's tail.
+
+### Exception safety model
+
+- `rehash()` builds the new bucket array before touching the old one — if allocation fails, the map is untouched
+- Copy construction and copy assignment insert into a `try`/`catch` block — on failure mid-copy, the partially built state is released and the exception is rethrown
+- Move construction and move assignment are `noexcept` — ownership transfer only, no allocation
+- `at()` throws `std::out_of_range` on a missing key; all other lookup operations are `noexcept`
+
+---
+
+## Complexity
+
+### Time complexity
+
+| Operation | Complexity (avg) | Complexity (worst) | Notes |
+|---|---|---|---|
+| `insert` | O(1) | O(n) | Worst case under heavy collision |
+| `find` | O(1) | O(n) | Chain walk within one bucket |
+| `contains` | O(1) | O(n) | Delegates to `find` |
+| `at` | O(1) | O(n) | Throws on miss |
+| `operator[]` | O(1) | O(n) | Inserts default value on miss |
+| `update` | O(1) | O(n) | No insertion on miss |
+| `erase` | O(1) | O(n) | Chain walk to unlink node |
+| `clear` | O(n) | O(n) | Deletes every node |
+| `rehash` | O(n) | O(n) | Relinks every node into new buckets |
+
+### Space complexity
+
+- O(n) for stored elements, one heap-allocated `Node` per element
+- O(b) for the bucket array, where `b` is the current bucket count
+- O(1) additional metadata per `HashMap` instance
+
+### Notes
+
+- Each element incurs one heap allocation (`new Node<K, V>`) — no bulk/arena allocation
+- Rehashing relinks existing nodes by pointer; it does not copy or reallocate key/value storage
+- `capacity()` returns the current bucket count, not a byte capacity
+
+---
+
+## Benchmarks
+
+Benchmarks compare `HashMap` against `std::unordered_map` across all operations. All times are total elapsed time for the listed iteration count.
 
 > Compiled with `-std=c++23`. Results may vary depending on hardware and compiler optimizations.
 
-### Constructor
+<details>
+<summary>Show benchmark results</summary>
+
+#### Constructor
 
 ```
 ----------------------------------------------------------------------
@@ -341,7 +342,7 @@ Std Move Assign                         649.83 ms       1000000
 ----------------------------------------------------------------------
 ```
 
-### Modifiers
+#### Modifiers
 
 ```
 ----------------------------------------------------------------------
@@ -364,7 +365,7 @@ Std Clear                               5.41 s          500000
 ----------------------------------------------------------------------
 ```
 
-### Lookup
+#### Lookup
 
 ```
 ----------------------------------------------------------------------
@@ -384,7 +385,7 @@ Std Contains Miss                       19.39 ms        1000000
 ----------------------------------------------------------------------
 ```
 
-### Access
+#### Access
 
 ```
 ----------------------------------------------------------------------
@@ -401,7 +402,7 @@ Std At Existing                         13.66 ms        1000000
 ----------------------------------------------------------------------
 ```
 
-### Iteration
+#### Iteration
 
 ```
 ----------------------------------------------------------------------
@@ -418,53 +419,40 @@ Std Traverse Forward Baseline           41.60 ms        500000
 ----------------------------------------------------------------------
 ```
 
-### Summary
+#### Summary
 
-Lookup operations are HashMap's strongest category. `Contains Hit` (12.82 ms vs 14.14 ms)
-and `Find Hit` (12.68 ms vs 13.44 ms) are marginally faster than `std::unordered_map` — a
-single hash and chain walk is competitive with libstdc++'s bucket-and-node design.
+Lookup operations are HashMap's strongest category. `Contains Hit` (12.82 ms vs 14.14 ms) and `Find Hit` (12.68 ms vs 13.44 ms) are marginally faster than `std::unordered_map` — a single hash and chain walk is competitive with libstdc++'s bucket-and-node design.
 
-Subscript access shows the widest advantage: `Subscript Existing` (12.82 ms vs 29.75 ms)
-is roughly 2.3x faster, since `operator[]` on an existing key resolves through a single
-`findNode` call rather than the node-splicing path `std::unordered_map` takes internally.
+Subscript access shows the widest advantage: `Subscript Existing` (12.82 ms vs 29.75 ms) is roughly 2.3x faster, since `operator[]` on an existing key resolves through a single `findNode` call rather than the node-splicing path `std::unordered_map` takes internally.
 
-Update is the other standout: `Update` (8.74 ms vs 25.49 ms) is roughly 2.9x faster —
-a direct chain walk and in-place assignment, with no rehash bookkeeping.
+Update is the other standout: `Update` (8.74 ms vs 25.49 ms) is roughly 2.9x faster — a direct chain walk and in-place assignment, with no rehash bookkeeping.
 
-Iteration is HashMap's weakest category. `Traverse Small` (166.93 ms vs 41.56 ms) and
-`Traverse Large` (1.03 s vs 493.04 ms) are both roughly 2-4x slower — separate chaining
-means iteration follows pointers through individually heap-allocated nodes, while
-`std::unordered_map`'s implementation benefits from a more cache-friendly internal layout.
-Reverse traversal (`Traverse Reverse`: 300.19 ms) carries additional cost from having to
-walk each chain from its head to find the predecessor of the current node, since nodes
-are singly-linked.
+Iteration is HashMap's weakest category. `Traverse Small` (166.93 ms vs 41.56 ms) and `Traverse Large` (1.03 s vs 493.04 ms) are both roughly 2-4x slower — separate chaining means iteration follows pointers through individually heap-allocated nodes, while `std::unordered_map`'s implementation benefits from a more cache-friendly internal layout. Reverse traversal (`Traverse Reverse`: 300.19 ms) carries additional cost from having to walk each chain from its head to find the predecessor of the current node, since nodes are singly-linked.
 
-Copy construction (`Copy Construct`: 14.19 s vs 5.38 s) is roughly 2.6x slower — every
-element triggers a full `insert()` including a duplicate-key check and a fresh heap
-allocation, rather than a bulk node copy.
+Copy construction (`Copy Construct`: 14.19 s vs 5.38 s) is roughly 2.6x slower — every element triggers a full `insert()` including a duplicate-key check and a fresh heap allocation, rather than a bulk node copy.
 
-| Category                | Winner              | Notes                                                    |
-| ------------------------ | -------------------- | ---------------------------------------------------------- |
-| Find / Contains hit       | HashMap              | Marginally faster — single chain walk                     |
-| Find / Contains miss      | HashMap              | Marginally faster across both hit and miss paths          |
-| Subscript existing        | HashMap              | ~2.3x faster — single lookup path                          |
-| Subscript missing         | HashMap              | Roughly comparable                                         |
-| At existing                | HashMap              | Marginally faster                                          |
-| Update                    | HashMap              | ~2.9x faster — direct in-place assignment                  |
-| Insert                    | HashMap              | Marginally faster                                          |
-| Insert growth              | std::unordered_map   | Roughly comparable, slight edge to std                     |
-| Erase                      | HashMap              | Marginally faster                                          |
-| Clear                      | std::unordered_map   | Roughly comparable                                         |
-| Construct                  | HashMap              | Marginally faster                                          |
-| Copy construct               | std::unordered_map   | ~2.6x faster — bulk copy vs per-element insert              |
-| Move construct / assign      | std::unordered_map   | Roughly comparable, slight edge to std                      |
-| Forward iteration             | std::unordered_map   | 2-4x faster — cache-friendlier internal layout               |
-| Reverse iteration               | —                     | No native `std::unordered_map` reverse iterator to compare  |
+| Category | Winner | Notes |
+|---|---|---|
+| Find / Contains hit | HashMap | Marginally faster — single chain walk |
+| Find / Contains miss | HashMap | Marginally faster across both hit and miss paths |
+| Subscript existing | HashMap | ~2.3x faster — single lookup path |
+| Subscript missing | HashMap | Roughly comparable |
+| At existing | HashMap | Marginally faster |
+| Update | HashMap | ~2.9x faster — direct in-place assignment |
+| Insert | HashMap | Marginally faster |
+| Insert growth | std::unordered_map | Roughly comparable, slight edge to std |
+| Erase | HashMap | Marginally faster |
+| Clear | std::unordered_map | Roughly comparable |
+| Construct | HashMap | Marginally faster |
+| Copy construct | std::unordered_map | ~2.6x faster — bulk copy vs per-element insert |
+| Move construct / assign | std::unordered_map | Roughly comparable, slight edge to std |
+| Forward iteration | std::unordered_map | 2-4x faster — cache-friendlier internal layout |
+| Reverse iteration | — | No native `std::unordered_map` reverse iterator to compare |
 
-**Use HashMap when:** lookup, update, and subscript access dominate the workload, and
-iteration order and iteration speed are not critical.
-**Use `std::unordered_map` when:** the workload is iteration-heavy or copy-heavy, or a
-more mature, extensively-optimized implementation is preferred for production use.
+**Use HashMap when:** lookup, update, and subscript access dominate the workload, and iteration order and iteration speed are not critical.
+**Use `std::unordered_map` when:** the workload is iteration-heavy or copy-heavy, or a more mature, extensively-optimized implementation is preferred for production use.
+
+</details>
 
 ---
 
@@ -494,7 +482,7 @@ HashMap/
 
 ---
 
-## Build Instructions
+## Building from Source
 
 ### Requirements
 
@@ -509,41 +497,45 @@ cmake .. -DCMAKE_BUILD_TYPE=Release
 cmake --build .
 ```
 
-### Run Tests
+### Run tests
 
 ```bash
-./tests
+./tests                 # run all test suites
+./tests list            # list available suites
+./tests 1               # run by number
+./tests name            # run by name
 ```
 
-### Run Benchmarks
+### Run benchmarks
 
 ```bash
-./benchmarks
+./benchmarks            # run all benchmark suites
+./benchmarks list       # list available suites
+./benchmarks 1          # run by number
+./benchmarks name       # run by name
 ```
 
-### Run Examples
+### Run examples
 
 ```bash
-./example_basic
-./example_modifiers
-./example_iteration
-./example_lookup
-./example_custom_hash
+./examples              # run all examples
+./examples list         # list available examples
+./examples 1            # run by number
+./examples name         # run by name
 ```
 
 ---
 
-## Notes
+## Known Limitations
 
-- `insert()` on an existing key is a no-op — use `update()` to overwrite an existing value.
-- `operator[]` inserts a default-constructed `V` for a missing key, matching `std::unordered_map` semantics.
-- `at()` throws `std::out_of_range` on a missing key, for both the const and non-const overloads.
-- `capacity()` returns the current bucket count, not a byte size.
-- Rehashing occurs automatically once the load factor exceeds `0.75`; there is no manual `reserve()` or `rehash()` exposed in the public API.
-- Iterators are invalidated by any operation that triggers a rehash (`insert()` past the load factor threshold).
+- **`insert()` on an existing key is a no-op.** It will not overwrite the stored value — use `update()` for explicit existing-key assignment instead.
+- **Iterators are invalidated by any operation that triggers a rehash**, including `insert()` calls that push the load factor past the `0.75` threshold.
+- **Iteration is noticeably slower than `std::unordered_map`** (e.g. `Traverse Large`: `1.03 s` vs `493.04 ms` at 100,000 iterations) — separate chaining means iteration follows pointers through individually heap-allocated nodes rather than a cache-friendly contiguous layout. See [Benchmarks](#benchmarks).
+- **Copy construction is roughly 2.6x slower than `std::unordered_map`** (`Copy Construct`: `14.19 s` vs `5.38 s` at 500,000 iterations) — every element triggers a full `insert()` with a duplicate-key check and a fresh heap allocation, rather than a bulk node copy.
+- **There is no manual `reserve()` or `rehash()` in the public API.** Bucket growth only happens automatically once the load factor exceeds `0.75`.
 
 ---
 
 ## License
 
-[MIT](LICENSE) — free to use, modify, and distribute for educational and personal purposes.
+Licensed under the [MIT License](LICENSE) — free to use, modify, and distribute for educational and personal purposes.
