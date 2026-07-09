@@ -329,7 +329,9 @@ namespace HashMapPro {
 		typename V,
 		typename Hash>
 	bool HashMap<K, V, Hash>::contains(const K& key) const noexcept {
-		return findNode(key) != nullptr;
+		if (bucketCount_ == 0)
+        return false;
+    return findNode(key) != nullptr;
 	}
 
 
@@ -495,7 +497,9 @@ namespace HashMapPro {
 		typename V,
 		typename Hash>
 	std::size_t HashMap<K, V, Hash>::bucketIndex(const K& key) const {
-		return hasher_(key) % bucketCount_;
+		if (bucketCount_ == 0)
+        return 0;
+    return hasher_(key) % bucketCount_;
 	}
 
 	template<typename K,
