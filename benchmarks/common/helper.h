@@ -3,6 +3,7 @@
 // clang-format off
 #include <HashMapPro/HashMap.h>   // (transitively required by macros.h's BENCH/BENCH_SOLO)
 
+#include <algorithm>              // std::transform
 #include <chrono>                 // nanoseconds, duration<>, used throughout formatDuration
 #include <iomanip>                // std::setw, std::setprecision, std::fixed, std::left
 #include <iostream>               // std::cout
