@@ -23,8 +23,8 @@ static void find_existing_key() {
 
     auto it = map.find(1);
 
-    CHK(it       != map.end());
-    CHK(it->key   == 1);
+    CHK(it != map.end());
+    CHK(it->key == 1);
     CHK(it->value == "one");
 }
 
@@ -57,8 +57,8 @@ static void const_find_existing_key() {
     const auto& constMap = map;
     auto it = constMap.find(1);
 
-    CHK(it       != constMap.end());
-    CHK(it->key   == 1);
+    CHK(it != constMap.end());
+    CHK(it->key == 1);
     CHK(it->value == "one");
 }
 

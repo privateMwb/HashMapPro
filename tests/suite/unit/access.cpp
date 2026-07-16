@@ -13,8 +13,8 @@
 
 #include <common/framework.h>
 
-#include <string>
 #include <stdexcept>
+#include <string>
 
 // Verifies operator[] inserts a default-constructed value for a missing key.
 static void subscript_missing_key() {
@@ -24,9 +24,9 @@ static void subscript_missing_key() {
 
     std::string& value = map[1];
 
-    CHK(value           == "");
+    CHK(value == "");
     CHK(map.contains(1) == true);
-    CHK(map.size()      == 1);
+    CHK(map.size() == 1);
 }
 
 // Verifies operator[] returns the existing value without creating a new element.
@@ -34,7 +34,7 @@ static void subscript_existing_key() {
     HashMapPro::HashMap<int, std::string> map{8};
     map.insert(1, "one");
 
-    CHK(map[1]     == "one");
+    CHK(map[1] == "one");
     CHK(map.size() == 1);
 }
 
@@ -47,7 +47,7 @@ static void subscript_mutation() {
 
     map[1] = "uno";
 
-    CHK(map.at(1)  == "uno");
+    CHK(map.at(1) == "uno");
     CHK(map.size() == 1);
 }
 

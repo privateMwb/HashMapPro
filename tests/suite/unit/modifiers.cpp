@@ -23,9 +23,9 @@ static void insert_new_key() {
 
     map.insert(1, "one");
 
-    CHK(map.size()      == 1);
+    CHK(map.size() == 1);
     CHK(map.contains(1) == true);
-    CHK(map.at(1)       == "one");
+    CHK(map.at(1) == "one");
 }
 
 // Verifies insert does not overwrite an existing key.
@@ -36,7 +36,7 @@ static void insert_existing_key_no_op() {
     map.insert(1, "uno");
 
     CHK(map.size() == 1);
-    CHK(map.at(1)  == "one");
+    CHK(map.at(1) == "one");
 }
 
 // Verifies update modifies the value of an existing key.
@@ -46,8 +46,8 @@ static void update_existing_key() {
 
     bool updated = map.update(1, "uno");
 
-    CHK(updated    == true);
-    CHK(map.at(1)  == "uno");
+    CHK(updated == true);
+    CHK(map.at(1) == "uno");
     CHK(map.size() == 1);
 }
 
@@ -57,9 +57,9 @@ static void update_missing_key() {
 
     bool updated = map.update(1, "one");
 
-    CHK(updated         == false);
+    CHK(updated == false);
     CHK(map.contains(1) == false);
-    CHK(map.size()      == 0);
+    CHK(map.size() == 0);
 }
 
 // Verifies erase removes an existing key.
@@ -70,10 +70,10 @@ static void erase_existing_key() {
 
     bool erased = map.erase(1);
 
-    CHK(erased          == true);
+    CHK(erased == true);
     CHK(map.contains(1) == false);
     CHK(map.contains(2) == true);
-    CHK(map.size()      == 1);
+    CHK(map.size() == 1);
 }
 
 // Verifies erase returns false for a missing key.
@@ -83,7 +83,7 @@ static void erase_missing_key() {
 
     bool erased = map.erase(2);
 
-    CHK(erased     == false);
+    CHK(erased == false);
     CHK(map.size() == 1);
 }
 
@@ -96,10 +96,10 @@ static void clear_resets_map() {
 
     map.clear();
 
-    CHK(map.size()      == 0);
-    CHK(map.empty()     == true);
+    CHK(map.size() == 0);
+    CHK(map.empty() == true);
     CHK(map.contains(1) == false);
-    CHK(map.capacity()  == 8);
+    CHK(map.capacity() == 8);
 }
 
 // Verifies the map remains usable after clear.
@@ -109,7 +109,7 @@ static void clear_then_reinsert() {
     map.clear();
     map.insert(2, "two");
 
-    CHK(map.size()      == 1);
+    CHK(map.size() == 1);
     CHK(map.contains(1) == false);
     CHK(map.contains(2) == true);
 }
@@ -122,7 +122,7 @@ static void insert_triggers_rehash() {
         map.insert(i, i * 10);
     }
 
-    CHK(map.size()     == 10);
+    CHK(map.size() == 10);
     CHK(map.capacity() > 4);
 
     for (int i = 0; i < 10; ++i) {

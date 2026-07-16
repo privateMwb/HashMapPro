@@ -37,7 +37,7 @@ static void forward_iteration_visits_all() {
         seen.insert(it->key);
     }
 
-    CHK(seen.size()   == 3);
+    CHK(seen.size() == 3);
     CHK(seen.count(1) == 1);
     CHK(seen.count(2) == 1);
     CHK(seen.count(3) == 1);
@@ -127,7 +127,7 @@ static void increment_consistency() {
     map.insert(1, "one");
     map.insert(2, "two");
 
-    auto pre  = map.begin();
+    auto pre = map.begin();
     auto post = map.begin();
 
     ++pre;

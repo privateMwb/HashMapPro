@@ -6,11 +6,9 @@
 # Sections:
 #   1. C++ Configuration
 #   2. HashMapPro Library
-#   3. Tests
-#   4. Benchmarks
-#   5. Examples
-#   6. Installation
-#   7. Packaging
+#   3. Subdirectories
+#   4. Installation
+#   5. Packaging
 #
 # ============================================================
 
@@ -30,6 +28,10 @@ project(
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Place all executables directly in the build directory, regardless of
+# which subdirectory defines them (e.g. build/tests, build/compare).
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 # ============================================================================
 # HashMapPro (Header-only Library)
@@ -54,91 +56,34 @@ target_compile_features(
 )
 
 # ============================================================================
-# Tests
+# Subdirectories
 # ============================================================================
 
-# Collect all test source files.
-file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS
-    "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp"
-)
+# Consumers (e.g. vcpkg) should disable these — only the library itself
+# needs to be configured/installed for downstream projects. Defaults to
+# ON so local development and existing CI workflows are unaffected.
+option(VECTORPRO_BUILD_TESTS "Build the HashMapPro test suite" ON)
+option(VECTORPRO_BUILD_BENCHMARKS "Build the HashMapPro benchmark suite" ON)
+option(VECTORPRO_BUILD_TOOLS "Build the compare/regression benchmark tools" ON)
+option(VECTORPRO_BUILD_EXAMPLES "Build the HashMapPro examples" ON)
 
-# Build the test executable.
-add_executable(
-    tests
-    ${TEST_SOURCES}
-)
+enable_testing()
 
-# Allow simple test includes.
-target_include_directories(
-    tests
-    PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/tests
-)
+if(VECTORPRO_BUILD_TESTS)
+    add_subdirectory(tests tests_build)
+endif()
 
-# Link HashMapPro to the test executable.
-target_link_libraries(
-    tests
-    PRIVATE
-    HashMapPro
-)
+if(VECTORPRO_BUILD_BENCHMARKS)
+    add_subdirectory(benchmarks benchmarks_build)
+endif()
 
-# ============================================================================
-# Benchmarks
-# ============================================================================
+if(VECTORPRO_BUILD_TOOLS)
+    add_subdirectory(tools tools_build)
+endif()
 
-# Collect all benchmark source files.
-file(GLOB_RECURSE BENCH_SOURCES CONFIGURE_DEPENDS
-    "${CMAKE_CURRENT_SOURCE_DIR}/benchmarks/*.cpp"
-)
-
-# Build the benchmark executable.
-add_executable(
-    benchmarks
-    ${BENCH_SOURCES}
-)
-
-# Allow simple benchmark includes.
-target_include_directories(
-    benchmarks
-    PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/benchmarks
-)
-
-# Link HashMapPro to the benchmark executable.
-target_link_libraries(
-    benchmarks
-    PRIVATE
-    HashMapPro
-)
-
-# ============================================================================
-# Examples
-# ============================================================================
-
-# Collect all example source files.
-file(GLOB_RECURSE EXAMPLE_SOURCES CONFIGURE_DEPENDS
-    "${CMAKE_CURRENT_SOURCE_DIR}/examples/*.cpp"
-)
-
-# Build the example executable.
-add_executable(
-    examples
-    ${EXAMPLE_SOURCES}
-)
-
-# Allow simple example includes.
-target_include_directories(
-    examples
-    PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/examples
-)
-
-# Link HashMapPro to the example executable.
-target_link_libraries(
-    examples
-    PRIVATE
-    HashMapPro
-)
+if(VECTORPRO_BUILD_EXAMPLES)
+    add_subdirectory(examples examples_build)
+endif()
 
 # ============================================================================
 # Installation

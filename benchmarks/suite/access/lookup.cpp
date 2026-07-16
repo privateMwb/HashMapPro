@@ -1,12 +1,12 @@
 // HashMap Lookup Benchmark Suite
-// Measures lookup performance (find and contains) compared to std::unordered_map
+// Measures find() and contains() performance against std::unordered_map
 // for both successful and unsuccessful queries.
 //
 // Covers:
-// - find operation on existing keys
-// - find operation on missing keys
-// - contains/count operation on existing keys
-// - contains/count operation on missing keys
+// - find on an existing key
+// - find on a missing key
+// - contains on an existing key
+// - contains on a missing key
 
 #include <common/framework.h>
 
@@ -28,15 +28,17 @@ static void bench_find_hit() {
         stdMap.insert({i, i});
     }
 
-    BENCH("hashmap_find_hit", LARGE, [&] {
+    auto hmp = [&] {
         auto it = map.find(32);
         doNotOptimize(it);
-    });
+    };
 
-    BENCH("std_find_hit", LARGE, [&] {
+    auto soum = [&] {
         auto it = stdMap.find(32);
         doNotOptimize(it);
-    });
+    };
+
+    BENCH("find hit", hmp, soum);
 }
 
 // Measures find() performance for a key that does not exist in the map.
@@ -50,18 +52,20 @@ static void bench_find_miss() {
         stdMap.insert({i, i});
     }
 
-    BENCH("hashmap_find_miss", LARGE, [&] {
+    auto hmp = [&] {
         auto it = map.find(9999);
         doNotOptimize(it);
-    });
+    };
 
-    BENCH("std_find_miss", LARGE, [&] {
+    auto soum = [&] {
         auto it = stdMap.find(9999);
         doNotOptimize(it);
-    });
+    };
+
+    BENCH("find miss", hmp, soum);
 }
 
-// Measures contains/count performance for a key that exists in the map.
+// Measures contains() performance for a key that exists in the map.
 static void bench_contains_hit() {
     Map map{128};
     StdMap stdMap;
@@ -72,16 +76,14 @@ static void bench_contains_hit() {
         stdMap.insert({i, i});
     }
 
-    BENCH("hashmap_contains_hit", LARGE, [&] {
-        doNotOptimize(map.contains(32));
-    });
+    auto hmp = [&] { doNotOptimize(map.contains(32)); };
 
-    BENCH("std_contains_hit", LARGE, [&] {
-        doNotOptimize(stdMap.count(32));
-    });
+    auto soum = [&] { doNotOptimize(stdMap.count(32)); };
+
+    BENCH("contains hit", hmp, soum);
 }
 
-// Measures contains/count performance for a key that does not exist in the map.
+// Measures contains() performance for a key that does not exist in the map.
 static void bench_contains_miss() {
     Map map{128};
     StdMap stdMap;
@@ -92,13 +94,11 @@ static void bench_contains_miss() {
         stdMap.insert({i, i});
     }
 
-    BENCH("hashmap_contains_miss", LARGE, [&] {
-        doNotOptimize(map.contains(9999));
-    });
+    auto hmp = [&] { doNotOptimize(map.contains(9999)); };
 
-    BENCH("std_contains_miss", LARGE, [&] {
-        doNotOptimize(stdMap.count(9999));
-    });
+    auto soum = [&] { doNotOptimize(stdMap.count(9999)); };
+
+    BENCH("contains miss", hmp, soum);
 }
 
 // Executes all lookup benchmark cases.

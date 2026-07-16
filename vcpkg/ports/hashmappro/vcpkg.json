@@ -1,0 +1,7 @@
+{
+  "name": "hashmappro",
+  "version": "1.0.0",
+  "description": "High-performance std::unordered_map-compatible separate-chaining hash map.",
+  "homepage": "https://github.com/privateMwb/HashMapPro",
+  "license": "MIT"
+}

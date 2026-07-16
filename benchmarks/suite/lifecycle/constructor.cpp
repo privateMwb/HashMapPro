@@ -1,110 +1,85 @@
-// HashMap Constructor Benchmark Suite
-// Measures construction, copy, and move performance
-// compared against std::unordered_map.
+// HashMap Construction Benchmark Suite
+// Measures construction performance against std::unordered_map.
 //
 // Covers:
-// - default construction comparison
-// - copy construction of populated maps
-// - move construction
-// - move assignment
+// - default construction
+// - reserved construction
+// - populate construction
 
 #include <common/framework.h>
 
 #include <unordered_map>
-#include <utility>
 
 using namespace HashMapPro;
 
 using Map = HashMap<int, int>;
 using StdMap = std::unordered_map<int, int>;
 
-// Measures default construction performance against std::unordered_map.
-static void bench_construct() {
-    BENCH("hashmap_construct", LARGE, [&] {
-        Map map{16};
+// Measures default construction.
+static void bench_default_construct() {
+    auto hmp = [&] {
+        Map map;
         doNotOptimize(map);
-    });
+    };
 
-    BENCH("std_construct", LARGE, [&] {
+    auto soum = [&] {
         StdMap map;
-        map.reserve(16);
         doNotOptimize(map);
-    });
+    };
+
+    BENCH("default construct", hmp, soum);
 }
 
-// Measures copy construction performance for populated maps.
-static void bench_copy_construct() {
-    Map source{64};
-    StdMap stdSource;
+// Measures construction with a reserved bucket count.
+static void bench_reserved_construct() {
+    auto hmp = [&] {
+        Map map{100};
+        doNotOptimize(map);
+    };
 
-    for (int i = 0; i < 32; ++i) {
-        source.insert(i, i);
-        stdSource[i] = i;
-    }
+    auto soum = [&] {
+        StdMap map;
+        map.reserve(100);
+        doNotOptimize(map);
+    };
 
-    BENCH("hashmap_copy_construct", MEDIUM, [&] {
-        Map copy{source};
-        doNotOptimize(copy);
-    });
-
-    BENCH("std_copy_construct", MEDIUM, [&] {
-        StdMap copy{stdSource};
-        doNotOptimize(copy);
-    });
+    BENCH("reserved construct", hmp, soum);
 }
 
-// Measures move construction performance against std::unordered_map.
-static void bench_move_construct() {
-    BENCH("hashmap_move_construct", LARGE, [&] {
-        Map a{16};
-        a.insert(1, 1);
+// Measures construction followed by populating a handful of elements.
+static void bench_populate_construct() {
+    auto hmp = [&] {
+        Map map;
 
-        Map b{std::move(a)};
-        doNotOptimize(b);
-    });
+        for (int i = 0; i < 5; ++i) {
+            map.insert(i, i);
+        }
 
-    BENCH("std_move_construct", LARGE, [&] {
-        StdMap a;
-        a[1] = 1;
+        doNotOptimize(map);
+    };
 
-        StdMap b{std::move(a)};
-        doNotOptimize(b);
-    });
+    auto soum = [&] {
+        StdMap map;
+
+        for (int i = 0; i < 5; ++i) {
+            map.insert({i, i});
+        }
+
+        doNotOptimize(map);
+    };
+
+    BENCH("populate construct", hmp, soum);
 }
 
-// Measures move assignment performance against std::unordered_map.
-static void bench_move_assign() {
-    BENCH("hashmap_move_assign", LARGE, [&] {
-        Map a{16};
-        a.insert(1, 1);
-
-        Map b{8};
-        b = std::move(a);
-        doNotOptimize(b);
-    });
-
-    BENCH("std_move_assign", LARGE, [&] {
-        StdMap a;
-        a[1] = 1;
-
-        StdMap b;
-        b = std::move(a);
-        doNotOptimize(b);
-    });
-}
-
-// Executes all constructor benchmark cases.
+// Executes all construction benchmark cases.
 static void run_benchmarks() {
-    bench_construct();
+    bench_default_construct();
     std::cout << "\n";
 
-    bench_copy_construct();
+    bench_reserved_construct();
     std::cout << "\n";
 
-    bench_move_construct();
-    std::cout << "\n";
-
-    bench_move_assign();
+    bench_populate_construct();
 }
 
 REGISTER_BENCH_SUITE();

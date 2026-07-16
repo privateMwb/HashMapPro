@@ -22,8 +22,8 @@ static void basic_construction() {
     HashMapPro::HashMap<int, int> map{16};
 
     CHK(map.capacity() == 16);
-    CHK(map.size()     == 0);
-    CHK(map.empty()    == true);
+    CHK(map.size() == 0);
+    CHK(map.empty() == true);
 }
 
 // Verifies zero buckets are clamped to the minimum capacity.
@@ -31,7 +31,7 @@ static void zero_bucket_count() {
     HashMapPro::HashMap<int, int> map{0};
 
     CHK(map.capacity() == 1);
-    CHK(map.size()     == 0);
+    CHK(map.size() == 0);
 }
 
 // Verifies the default constructor uses the default bucket count.
@@ -39,7 +39,7 @@ static void default_bucket_count() {
     HashMapPro::HashMap<int, int> map;
 
     CHK(map.capacity() == 16);
-    CHK(map.empty()    == true);
+    CHK(map.empty() == true);
 }
 
 // Verifies a newly constructed map is empty.
@@ -47,8 +47,8 @@ static void initial_state() {
     HashMapPro::HashMap<int, std::string> map{8};
 
     CHK(map.contains(1) == false);
-    CHK(map.find(1)     == map.end());
-    CHK(map.begin()     == map.end());
+    CHK(map.find(1) == map.end());
+    CHK(map.begin() == map.end());
 }
 
 // Verifies copy construction performs a deep copy.
@@ -59,10 +59,10 @@ static void copy_construction() {
 
     HashMapPro::HashMap<int, std::string> b{a};
 
-    CHK(b.size()      == 2);
-    CHK(b.at(1)       == "one");
-    CHK(b.at(2)       == "two");
-    CHK(a.size()      == 2);
+    CHK(b.size() == 2);
+    CHK(b.at(1) == "one");
+    CHK(b.at(2) == "two");
+    CHK(a.size() == 2);
 
     b.insert(3, "three");
     CHK(a.contains(3) == false);
@@ -78,8 +78,8 @@ static void copy_assignment() {
 
     b = a;
 
-    CHK(b.size()       == 1);
-    CHK(b.at(1)        == "one");
+    CHK(b.size() == 1);
+    CHK(b.at(1) == "one");
     CHK(b.contains(99) == false);
 }
 
@@ -91,7 +91,7 @@ static void copy_assignment_self() {
     a = a;
 
     CHK(a.size() == 1);
-    CHK(a.at(1)  == "one");
+    CHK(a.at(1) == "one");
 }
 
 // Verifies move construction transfers ownership to the destination.
@@ -101,10 +101,13 @@ static void move_construction() {
 
     HashMapPro::HashMap<int, std::string> b{std::move(a)};
 
-    CHK(b.size()     == 1);
-    CHK(b.at(1)      == "one");
-    CHK(a.size()     == 0);
+    CHK(b.size() == 1);
+    CHK(b.at(1) == "one");
+
+    // NOLINTBEGIN(clang-analyzer-cplusplus.Move)
+    CHK(a.size() == 0);
     CHK(a.capacity() == 0);
+    // NOLINTEND(clang-analyzer-cplusplus.Move)
 }
 
 // Verifies move assignment transfers ownership to the destination.
@@ -117,10 +120,13 @@ static void move_assignment() {
 
     b = std::move(a);
 
-    CHK(b.size()     == 1);
-    CHK(b.at(1)      == "one");
-    CHK(a.size()     == 0);
+    CHK(b.size() == 1);
+    CHK(b.at(1) == "one");
+
+    // NOLINTBEGIN(clang-analyzer-cplusplus.Move)
+    CHK(a.size() == 0);
     CHK(a.capacity() == 0);
+    // NOLINTEND(clang-analyzer-cplusplus.Move)
 }
 
 // Verifies self move assignment preserves a valid map state.
@@ -131,7 +137,7 @@ static void self_move_assignment() {
     a = std::move(a);
 
     CHK(a.size() == 1);
-    CHK(a.at(1)  == "one");
+    CHK(a.at(1) == "one");
 }
 
 // Executes all constructor test cases.
