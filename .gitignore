@@ -38,3 +38,6 @@ coverage-html/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Release tarballs (downloaded locally for hash verification)
+*.tar.gz
