@@ -89,10 +89,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: regression-results-json
-          path: regression_results.json
+          path: benchmarks/results/regression_results.json
 
       - name: Upload Regression Markdown Results
         uses: actions/upload-artifact@v4
         with:
           name: regression-results-md
-          path: regression_results.md
+          path: benchmarks/results/regression_results.md
