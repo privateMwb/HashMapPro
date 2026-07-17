@@ -2,7 +2,7 @@ vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO privateMwb/HashMapPro
     REF v1.0.0
-    SHA512 0732282c09dd7acf75494dc2b859103f77d11ddf76fb680bb72328ffd12bb5a2946d4bf7c98c8476839e7ca9704cd20eda93cf308929ed9c058b1a77549c2494
+    SHA512 038f3639f43f03e829fe3d9f14f715e41088cb16acbeeb0ceb6b7a9e05df05b946b727031839435d74a354a1e10db06e322ecd812cdcdf6be4cdbe912dd9dd60
 )
 
 # HashMapPro is header-only; consumers only need the library itself,
