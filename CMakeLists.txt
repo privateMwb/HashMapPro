@@ -62,26 +62,26 @@ target_compile_features(
 # Consumers (e.g. vcpkg) should disable these — only the library itself
 # needs to be configured/installed for downstream projects. Defaults to
 # ON so local development and existing CI workflows are unaffected.
-option(VECTORPRO_BUILD_TESTS "Build the HashMapPro test suite" ON)
-option(VECTORPRO_BUILD_BENCHMARKS "Build the HashMapPro benchmark suite" ON)
-option(VECTORPRO_BUILD_TOOLS "Build the compare/regression benchmark tools" ON)
-option(VECTORPRO_BUILD_EXAMPLES "Build the HashMapPro examples" ON)
+option(HASHMAPPRO_BUILD_TESTS "Build the HashMapPro test suite" ON)
+option(HASHMAPPRO_BUILD_BENCHMARKS "Build the HashMapPro benchmark suite" ON)
+option(HASHMAPPRO_BUILD_TOOLS "Build the compare/regression benchmark tools" ON)
+option(HASHMAPPRO_BUILD_EXAMPLES "Build the HashMapPro examples" ON)
 
 enable_testing()
 
-if(VECTORPRO_BUILD_TESTS)
+if(HASHMAPPRO_BUILD_TESTS)
     add_subdirectory(tests tests_build)
 endif()
 
-if(VECTORPRO_BUILD_BENCHMARKS)
+if(HASHMAPPRO_BUILD_BENCHMARKS)
     add_subdirectory(benchmarks benchmarks_build)
 endif()
 
-if(VECTORPRO_BUILD_TOOLS)
+if(HASHMAPPRO_BUILD_TOOLS)
     add_subdirectory(tools tools_build)
 endif()
 
-if(VECTORPRO_BUILD_EXAMPLES)
+if(HASHMAPPRO_BUILD_EXAMPLES)
     add_subdirectory(examples examples_build)
 endif()
 
