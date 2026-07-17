@@ -7,7 +7,7 @@
  *
  * @copyright       Copyright (c) 2026 Your Name
  *                  All rights reserved.
- *                  https://github.com/yourhandle/HashMapPro
+ *                  https://github.com/privateMwb/HashMapPro
  *
  * @attention       This source is released under the MIT license
  *                  SPDX-License-Identifier: MIT
