@@ -38,6 +38,12 @@ jobs:
       - name: Run Benchmarks
         run: ./build/benchmarks
 
+      - name: Build Regression
+        run: cmake --build build --target regression
+
+      - name: Run Regression
+        run: ./build/regression
+        
       - name: Determine version
         id: version
         run: |
@@ -78,12 +84,6 @@ jobs:
         with:
           name: benchmark-results-md
           path: benchmarks/results/benchmark_results.md
-
-      - name: Build Regression
-        run: cmake --build build --target regression
-
-      - name: Run Regression
-        run: ./build/regression
 
       - name: Upload Regression Json Results
         uses: actions/upload-artifact@v4
