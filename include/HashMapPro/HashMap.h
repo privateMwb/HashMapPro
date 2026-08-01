@@ -270,10 +270,17 @@ template <typename K, typename V, typename Hash = std::hash<K>> class HashMap {
 
 } // namespace HashMapPro
 
-/// @brief Short alias so this library can be used as `rain::HashMap`, while
-/// its true namespace (and all internal diagnostics) remains `HashMapPro`.
-/// See Node.h and Iterator.h for the same alias applied to `rain::Node` and
-/// `rain::Iterator`.
-namespace rain = HashMapPro;
+/// @brief Umbrella alias so this library's types are reachable as
+/// `rain::HashMap`, alongside every other project library, while its true
+/// namespace (and all internal diagnostics) remains `HashMapPro`. Reopens
+/// `rain` rather than aliasing it, since multiple libraries each contribute
+/// their own names into the same `rain` namespace -- an alias
+/// (`namespace rain = HashMapPro;`) can only ever bind to one target and
+/// collides the moment a second library declares its own `rain` alias to
+/// something else. Declared here only (HashMapPro's main header); Node.h
+/// and Iterator.h do not redeclare this.
+namespace rain {
+using namespace HashMapPro;
+}
 
 #include "HashMap.tpp"

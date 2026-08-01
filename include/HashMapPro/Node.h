@@ -34,8 +34,3 @@ template <typename K, typename V> struct Node {
 };
 
 } // namespace HashMapPro
-
-/// @brief Short alias so this library can be used as `rain::Node`, while its
-/// true namespace (and all internal diagnostics) remains `HashMapPro`. See
-/// HashMap.h for the same alias applied to `rain::HashMap`.
-namespace rain = HashMapPro;

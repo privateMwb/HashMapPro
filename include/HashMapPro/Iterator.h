@@ -185,8 +185,3 @@ template <typename K, typename V, bool IsConst = false> class Iterator {
 };
 
 } // namespace HashMapPro
-
-/// @brief Short alias so this library can be used as `rain::Iterator`, while
-/// its true namespace remains `HashMapPro`. See HashMap.h for the same alias
-/// applied to `rain::HashMap`.
-namespace rain = HashMapPro;
