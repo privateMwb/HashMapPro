@@ -6,7 +6,7 @@
 // - std::for_each for bulk processing
 // - satisfying the bidirectional iterator requirements STL expects
 
-#include <common/framework.h>
+#include <support/framework.h>
 
 #include <algorithm>
 #include <string>

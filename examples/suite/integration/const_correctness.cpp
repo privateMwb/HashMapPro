@@ -5,7 +5,7 @@
 // - the const-qualified overloads of at(), find(), begin(), and end()
 // - const_iterator being used automatically for a const map
 
-#include <common/framework.h>
+#include <support/framework.h>
 
 #include <string>
 

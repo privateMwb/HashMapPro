@@ -9,7 +9,7 @@
 // - reserve()'s computed target is rounded up to a power of two
 // - capacity remains a power of two after rehash-triggered growth
 
-#include <common/framework.h>
+#include <support/framework.h>
 
 #include <string>
 

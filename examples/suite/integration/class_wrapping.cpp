@@ -5,7 +5,7 @@
 // - exposing a narrow, purpose-built public interface around it
 // - the wrapper class benefiting from HashMap's own copy/move semantics
 
-#include <common/framework.h>
+#include <support/framework.h>
 
 #include <string>
 

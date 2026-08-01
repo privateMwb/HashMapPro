@@ -11,7 +11,7 @@
 //   after the triggering insertion
 // - max_load_factor() reports the documented constant
 
-#include <common/framework.h>
+#include <support/framework.h>
 
 #include <string>
 

@@ -1,35 +1,47 @@
-# HashMapPro
+<!--
+  Retargeting: replace every <angle-bracket> placeholder below. The
+  badge URLs, CI workflow names, and project-structure tree already
+  match this skeleton's actual layout — only the owner/repo and
+  project name need swapping in those. Features, Quick Start, and
+  Benchmarks are marked as sections to write fresh each time; don't
+  invent numbers or content to fill them.
+-->
+
+# <ProjectName>
 
 <p align="center">
-  <img src="https://img.shields.io/github/v/release/privateMwb/HashMapPro?style=for-the-badge&logo=github&color=yellow" alt="Version">
+  <img src="https://img.shields.io/github/v/release/<owner>/<repo>?style=for-the-badge&logo=github&color=yellow" alt="Version">
   <img src="https://img.shields.io/badge/License-MIT-orange?style=for-the-badge" alt="License - MIT">
   <img src="https://img.shields.io/badge/C%2B%2B-23-blue?style=for-the-badge&logo=c%2B%2B" alt="C++ - 23">
 </p>
 
 <p align="center">
-  <a href="https://github.com/privateMwb/HashMapPro/actions/workflows/build.yml">
-    <img src="https://github.com/privateMwb/HashMapPro/actions/workflows/build.yml/badge.svg" alt="Build and Test">
+  <a href="https://github.com/<owner>/<repo>/actions/workflows/build.yml">
+    <img src="https://github.com/<owner>/<repo>/actions/workflows/build.yml/badge.svg" alt="Build and Test">
   </a>
-  <a href="https://github.com/privateMwb/HashMapPro/actions/workflows/benchmark.yml">
-    <img src="https://github.com/privateMwb/HashMapPro/actions/workflows/benchmark.yml/badge.svg" alt="Benchmarks">
+  <a href="https://github.com/<owner>/<repo>/actions/workflows/benchmark.yml">
+    <img src="https://github.com/<owner>/<repo>/actions/workflows/benchmark.yml/badge.svg" alt="Benchmarks">
   </a>
-  <a href="https://github.com/privateMwb/HashMapPro/actions/workflows/coverage.yml">
-    <img src="https://github.com/privateMwb/HashMapPro/actions/workflows/coverage.yml/badge.svg" alt="Coverage">
+  <a href="https://github.com/<owner>/<repo>/actions/workflows/coverage.yml">
+    <img src="https://github.com/<owner>/<repo>/actions/workflows/coverage.yml/badge.svg" alt="Coverage">
   </a>
-  <a href="https://github.com/privateMwb/HashMapPro/actions/workflows/sanitizers.yml">
-    <img src="https://github.com/privateMwb/HashMapPro/actions/workflows/sanitizers.yml/badge.svg" alt="Sanitizers">
+  <a href="https://github.com/<owner>/<repo>/actions/workflows/sanitizers.yml">
+    <img src="https://github.com/<owner>/<repo>/actions/workflows/sanitizers.yml/badge.svg" alt="Sanitizers">
   </a>
-  <a href="https://github.com/privateMwb/HashMapPro/actions/workflows/clang-tidy.yml">
-    <img src="https://github.com/privateMwb/HashMapPro/actions/workflows/clang-tidy.yml/badge.svg" alt="Clang Tidy">
+  <a href="https://github.com/<owner>/<repo>/actions/workflows/clang-tidy.yml">
+    <img src="https://github.com/<owner>/<repo>/actions/workflows/clang-tidy.yml/badge.svg" alt="Clang Tidy">
   </a>
-  <a href="https://github.com/privateMwb/HashMapPro/actions/workflows/clang-format.yml">
-    <img src="https://github.com/privateMwb/HashMapPro/actions/workflows/clang-format.yml/badge.svg" alt="Clang Format">
+  <a href="https://github.com/<owner>/<repo>/actions/workflows/clang-format.yml">
+    <img src="https://github.com/<owner>/<repo>/actions/workflows/clang-format.yml/badge.svg" alt="Clang Format">
   </a>
-  <a href="https://github.com/privateMwb/HashMapPro/actions/workflows/docs.yml">
-    <img src="https://github.com/privateMwb/HashMapPro/actions/workflows/docs.yml/badge.svg" alt="Documentation">
+  <a href="https://github.com/<owner>/<repo>/actions/workflows/docs.yml">
+    <img src="https://github.com/<owner>/<repo>/actions/workflows/docs.yml/badge.svg" alt="Documentation">
   </a>
-  <a href="https://github.com/privateMwb/HashMapPro/actions/workflows/release.yml">
-    <img src="https://github.com/privateMwb/HashMapPro/actions/workflows/release.yml/badge.svg" alt="Release">
+  <a href="https://github.com/<owner>/<repo>/actions/workflows/release.yml">
+    <img src="https://github.com/<owner>/<repo>/actions/workflows/release.yml/badge.svg" alt="Release">
+  </a>
+  <a href="https://github.com/<owner>/<repo>/actions/workflows/packaging.yml">
+    <img src="https://github.com/<owner>/<repo>/actions/workflows/packaging.yml/badge.svg" alt="Packaging">
   </a>
 </p>
 
@@ -40,48 +52,43 @@
   <img src="https://img.shields.io/badge/AppleClang-support-000000?style=flat&logo=apple" alt="AppleClang - support">
 </p>
 
-A header-only, C++23, `std::unordered_map`-compatible separate-chaining hash
-map, built from scratch with a power-of-two bucket count and an explicit
-`reserve()`/`rehash()` API for controlling allocation up front.
+
+<!-- One or two sentences: what this is, and the two or three things
+     that make it worth using over the obvious alternative. This is
+     the only line most visitors read — make it specific, not generic
+     marketing copy. -->
+<ProjectName> is a <one-line description of what it does and why>.
 
 ## 📑 Table of Contents
 
-- [Features](#-features)
-- [Requirements](#-requirements)
-- [Installation](#-installation)
-- [Quick Start](#-quick-start)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
 - [Project Structure](#project-structure)
 - [Development](#development)
-- [Benchmarks](#-benchmarks)
-- [Documentation](#-documentation)
-- [Contributing](#-contributing)
-- [Changelog](#-changelog)
-- [License](#-license)
+- [Benchmarks](#benchmarks)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [Changelog](#changelog)
+- [License](#license)
 
 ## <a id="features"></a>✨ Features
 
-- **Familiar `std::unordered_map` API** — `operator[]`, `at()`, `insert()`,
-  `update()`, `erase()`, `contains()`, `find()`, `clear()`, forward/reverse
-  iterators, and more.
-- **Separate chaining** with a power-of-two bucket count, so lookups can
-  mask instead of dividing when locating a bucket.
-- **Custom hash support** — the hash function is a template parameter
-  (`Hash = std::hash<K>` by default), so any type satisfying the standard
-  hash interface works.
-- **Explicit capacity control** — `reserve(desiredCapacity)` computes the
-  smallest bucket count that keeps the load factor under the configured
-  maximum and rehashes up front, useful before a bulk-insert loop.
-- **`update()` distinct from `insert()`** — `insert()` is a no-op if the
-  key already exists; `update()` only replaces an existing key's value and
-  reports whether it found one, so intent is explicit at the call site.
-- **Copy and move semantics** — deep-copying copy constructor/assignment,
-  and move construction/assignment that leaves the source in a valid,
-  reusable empty state.
-- **C++23 throughout** the header and iterator implementation.
+<!-- Write these fresh per project — they should name the actual
+     design decisions that make this implementation different, the
+     way JsonPro's called out std::variant-backed storage and
+     std::to_chars-based serialization rather than just "it's fast."
+     A bullet that could describe any library in this category is a
+     bullet worth cutting. -->
+
+- **<Specific design decision>** — <what it is, why it matters, and
+  what it avoids compared to the obvious naive approach>.
+- **<Another concrete decision>** — <same pattern>.
 
 ## <a id="requirements"></a>📋 Requirements
 
-- A C++23-conformant compiler (tested: GCC, Clang, MSVC, AppleClang)
+- A C++23-conformant compiler (tested: Clang, GCC, MSVC)
 - CMake 3.20+
 
 ## <a id="installation"></a>📦 Installation
@@ -89,151 +96,111 @@ map, built from scratch with a power-of-two bucket count and an explicit
 **From source:**
 
 ```bash
-git clone https://github.com/privateMwb/HashMapPro.git
-cd HashMapPro
+git clone https://github.com/<owner>/<repo>.git
+cd <repo>
 cmake -B build \
-  -DHASHMAPPRO_BUILD_TESTS=OFF \
-  -DHASHMAPPRO_BUILD_BENCHMARKS=OFF \
-  -DHASHMAPPRO_BUILD_TOOLS=OFF \
-  -DHASHMAPPRO_BUILD_EXAMPLES=OFF
+  -DBUILD_TESTS=OFF \
+  -DBUILD_BENCHMARKS=OFF \
+  -DBUILD_TOOLS=OFF \
+  -DBUILD_EXAMPLES=OFF
 cmake --install build
 ```
 
 Then, in your own `CMakeLists.txt`:
 
 ```cmake
-find_package(HashMapPro CONFIG REQUIRED)
-target_link_libraries(your_target PRIVATE HashMapPro::HashMapPro)
+find_package(<ProjectName> CONFIG REQUIRED)
+target_link_libraries(your_target PRIVATE <ProjectName>::<ProjectName>)
 ```
 
-> vcpkg and Conan packages are built and verified, but not yet published to
-> the public registries. This section will be updated once they are.
+> vcpkg and Conan packages are built and verified (recipe in
+> `packaging/recipes/<name>/`, port in `packaging/vcpkg/ports/<name>/`),
+> but not yet published to the public registries. This section will be
+> updated once they are.
 
 ## <a id="quick-start"></a>🚀 Quick Start
 
-**Basic usage:**
+<!-- 2–3 short, runnable examples: the most common single call, one
+     example that builds something up rather than just reading it,
+     and error handling if the library has anything like an exception
+     hierarchy worth showing. Real code that compiles against the
+     actual API — not the placeholder below. -->
 
 ```cpp
-#include <HashMapPro/HashMap.h>
-#include <iostream>
+#include <ProjectName/Header.h>
 
 int main() {
-    HashMapPro::HashMap<int, std::string> map;
-    map.insert(1, "one");
-    map.insert(2, "two");
-
-    std::cout << map.at(1) << " " << map.at(2) << "\n"; // one two
-}
-```
-
-**Reserving capacity before a bulk insert:**
-
-```cpp
-#include <HashMapPro/HashMap.h>
-
-int main() {
-    HashMapPro::HashMap<int, int> map;
-    map.reserve(10'000); // rehash once, up front, instead of repeatedly
-
-    for (int i = 0; i < 10'000; ++i) {
-        map.insert(i, i * i);
-    }
-}
-```
-
-**Using a custom hash function:**
-
-```cpp
-#include <HashMapPro/HashMap.h>
-#include <string>
-
-struct CaseInsensitiveHash {
-    std::size_t operator()(const std::string& key) const {
-        std::string lower = key;
-        for (auto& c : lower) c = std::tolower(static_cast<unsigned char>(c));
-        return std::hash<std::string>{}(lower);
-    }
-};
-
-int main() {
-    HashMapPro::HashMap<std::string, int, CaseInsensitiveHash> map;
-    map.insert("Hello", 1);
-}
-```
-
-**`update()` vs. `insert()`:**
-
-```cpp
-#include <HashMapPro/HashMap.h>
-
-int main() {
-    HashMapPro::HashMap<int, std::string> map;
-    map.insert(1, "one");
-
-    map.insert(1, "ONE");        // no-op — key already exists
-    bool updated = map.update(1, "ONE"); // true — replaces the value
-    bool missed  = map.update(2, "two"); // false — key 2 doesn't exist
+    // ...
 }
 ```
 
 ## <a id="project-structure"></a>🗂️ Project Structure
 
 ```
-HashMapPro/
+<repo>/
 ├── include/
-│   └── HashMapPro/
-│       ├── HashMap.h
-│       ├── HashMap.tpp
-│       ├── Iterator.h
-│       └── Node.h
+│   └── <ProjectName>/
+│       ├── ...
+│
+├── src/
+│   └── <ProjectName>/
+│       ├── ...
 │
 ├── tests/
-│   ├── common/
+│   ├── support/
 │   ├── suite/
-│   ├── test_all.cpp
+│   ├── test_main.cpp
 │   └── CMakeLists.txt
 │
 ├── benchmarks/
-│   ├── common/
+│   ├── support/
 │   ├── suite/
 │   ├── baselines/
-│   ├── bench_all.cpp
+│   ├── bench_main.cpp
 │   └── CMakeLists.txt
 │
 ├── examples/
-│   ├── common/
+│   ├── support/
 │   ├── suite/
-│   ├── example_all.cpp
+│   ├── example_main.cpp
 │   └── CMakeLists.txt
 │
 ├── tools/
 │   ├── regression/
 │   └── CMakeLists.txt
 │
-├── recipes/
-│   └── hashmappro/          # Conan recipe
+├── packaging/
+│   ├── recipes/
+│   │   └── <name>/
+│   ├── vcpkg/
+│   │   └── ports/
+│   └── vcpkg-smoke-test/
 │
-├── vcpkg/
-│   └── ports/                # vcpkg port
+├── scripts/
+│   └── update_package_files.py
+│
+├── .github/
+│   └── workflows/
 │
 ├── cmake/
-│   └── HashMapProConfig.cmake.in
+│   └── <ProjectName>Config.cmake.in
 │
 ├── docs/
 │   ├── Doxyfile
-│   └── PACKAGING.md
+│   └── README.md
 │
 ├── .gitignore
 ├── CMakeLists.txt
 ├── README.md
+├── RETARGETING.md
 └── LICENSE
 ```
 
 ## <a id="development"></a>🛠️ Development
 
 The from-source install above builds the library only. To work on
-HashMapPro itself — running tests, benchmarks, or the regression tool —
-build with everything enabled (the default):
+<ProjectName> itself — running tests, benchmarks, or the regression
+tool — build with everything enabled (the default):
 
 ```bash
 cmake -B build
@@ -250,100 +217,50 @@ ctest --test-dir build
 
 ```bash
 ./build/benchmarks
-./build/regression   # current results vs. benchmarks/baselines/v1.0.0.json
+./build/regression                  # latest baseline vs. benchmarks/results/benchmark_results.json
+./build/regression v1.2.0           # a specific baseline vs. current
+./build/regression v1.2.0 v1.4.0    # two baselines against each other
 ```
 
-**Sanitizers, static analysis, and formatting** are covered by the
-`Sanitizers`, `Clang Tidy`, and `Clang Format` CI workflows — see
-`.github/workflows/` for the exact invocations if you want to reproduce
-them locally.
+`regression` picks the latest baseline by semantic version (`v1.10.0`
+correctly outranks `v1.9.0`), not alphabetical filename order, and
+auto-names its output (`regression_v1.2.0_vs_current.md`/`.json`, etc.).
 
-**Build the docs locally:**
-
-```bash
-doxygen docs/Doxyfile
-```
-
-See `docs/PACKAGING.md` for notes on verifying the vcpkg port and Conan
-recipe locally.
+See [docs/README.md](docs/README.md) for notes on verifying the vcpkg
+port and Conan recipe locally.
 
 ## <a id="benchmarks"></a>📊 Benchmarks
 
-Measured against `std::unordered_map`, same build, at 10K / 100K / 1M
-elements (`benchmarks/baselines/v1.0.0.json` has the full dataset).
-Numbers below are the 100K row unless noted.
+<!-- Real measured numbers only — from an actual benchmarks/baselines/
+     snapshot, never invented. If there's nothing to compare against
+     yet, say so plainly instead of leaving a fabricated table here. -->
 
-**At parity or faster:**
+Measured against `<reference-implementation>`, same build, at 10K /
+100K / 1M iterations (`benchmarks/baselines/<version>.json` has the
+full dataset).
 
-| Operation | HashMapPro | std::unordered_map | Difference |
+| Operation | <ProjectName> | <reference-implementation> | Difference |
 |---|---|---|---|
-| `At existing` | 4.19 ms | 19.76 ms | ~78% faster |
-| `Update existing` | 8.81 ms | 34.86 ms | ~75% faster |
-| `Contains miss` | 4.43 ms | 15.62 ms | ~72% faster |
-| `Insert existing` | 8.38 ms | 28.44 ms | ~71% faster |
-| `Rehash trigger` | 5.89 s | 13.39 s | ~56% faster |
-| `Move assignment` | 5.94 s | 12.25 s | ~52% faster |
-| `Copy assignment` | 4.90 s | 4.90 s | parity |
-
-**Slower, and consistent across scale — worth fixing:**
-
-| Operation | HashMapPro | std::unordered_map | Difference |
-|---|---|---|---|
-| `Clear` (empty map) | 106.33 ms | 1.64 ms | ~65x slower |
-| `Default construct` | 87.41 ms | 12.06 ms | ~86% slower |
-| `Reserve` (explicit call) | 1.33 s | 503.40 ms | ~62% slower |
-| `Reserved construct` | 377.69 ms | 251.14 ms | ~34% slower |
-| `Reverse traverse` | 1.70 s | 774.98 ms | ~55% slower |
-
-<details>
-<summary>Why the gap on these specific operations</summary>
-
-`clear()` unconditionally walks every bucket (`bucketCount_` of them) and
-frees any chained nodes, even on an empty map — there's no early exit for
-the zero-element case. That's the source of the ~65x gap: it's paying
-O(bucket count) instead of O(element count), and an empty map still has
-16+ allocated buckets to walk. The default constructor has a matching
-cost: it eagerly allocates and null-initializes the full bucket array
-(minimum 16 buckets) rather than deferring allocation until the first
-insert, which is why `Default construct` shows a consistent ~85%+ gap at
-every scale rather than narrowing as element count grows.
-
-`reserve()` and reserved-capacity construction pay a similar up-front
-cost — computing the target bucket count and allocating/rehashing into it
-immediately, rather than lazily on first use. This is a deliberate
-trade-off (predictable one-time cost before a bulk-insert loop, matching
-the "reserve before a bulk insert" usage pattern in Quick Start) but it
-does mean an isolated `reserve()` call, measured on its own, looks
-worse than `std::unordered_map`'s more incremental growth.
-
-The `Reverse traverse` gap and the `Erase existing` anomaly at the 1M row
-specifically (present in the full dataset but not shown above, since it's
-inconsistent with the 10K/100K rows for the same operation) are still
-under investigation — see `benchmarks/baselines/v1.0.0.json` for the raw
-numbers if you want to look yourself.
-
-</details>
+| `<operation>` | `<time>` | `<time>` | `<±N%>` |
 
 ## <a id="documentation"></a>📖 Documentation
 
-Full API reference (generated with Doxygen, updated on every push to
-`main`):
+Full API reference, generated with Doxygen from `docs/Doxyfile`:
 
-**https://privateMwb.github.io/HashMapPro/**
+**https://<owner>.github.io/<repo>/**
 
 ## <a id="contributing"></a>🤝 Contributing
 
 Issues and pull requests are welcome. Before submitting a PR:
 
 - Run the test suite (`ctest --test-dir build`)
-- Format with `clang-format` (or let the `Clang Format` CI check catch it)
-- If you're changing a hot path, run `./build/regression` and mention the
-  results in your PR description
+- If you're changing a hot path, run `./build/regression` and mention
+  the results in your PR description
 
 ## <a id="changelog"></a>📝 Changelog
 
-See the [Releases](https://github.com/privateMwb/HashMapPro/releases) page
-for version history and release notes.
+See the [Releases](https://github.com/<owner>/<repo>/releases)
+page for version history and release notes.
 
 ## <a id="license"></a>📄 License
 

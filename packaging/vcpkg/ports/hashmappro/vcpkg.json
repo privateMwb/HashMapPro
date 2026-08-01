@@ -1,0 +1,11 @@
+{
+  "name": "hashmappro",
+  "version": "1.0.0",
+  "description": "High-performance, header-only hash map with separate chaining, automatic rehashing, and power-of-two bucket sizing (bitmask indexing).",
+  "homepage": "https://github.com/privateMwb/HashMapPro",
+  "license": "MIT",
+  "dependencies": [
+    "vcpkg-cmake",
+    "vcpkg-cmake-config"
+  ]
+}

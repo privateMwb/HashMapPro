@@ -12,7 +12,7 @@
 // - many short-lived thread-local maps across thread lifetimes all
 //   produce correct, independent results
 
-#include <common/framework.h>
+#include <support/framework.h>
 
 #include <atomic>
 #include <string>

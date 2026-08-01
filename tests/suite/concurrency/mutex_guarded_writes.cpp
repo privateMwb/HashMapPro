@@ -11,7 +11,7 @@
 // - a mix of guarded insert and erase across threads leaves size
 //   consistent with the net number of operations
 
-#include <common/framework.h>
+#include <support/framework.h>
 
 #include <mutex>
 #include <string>

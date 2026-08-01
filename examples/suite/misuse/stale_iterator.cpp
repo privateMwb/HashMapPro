@@ -5,7 +5,7 @@
 // - the correct pattern: re-lookup or re-iterate after an erase
 // - that other, non-erased iterators remain valid
 
-#include <common/framework.h>
+#include <support/framework.h>
 
 #include <string>
 

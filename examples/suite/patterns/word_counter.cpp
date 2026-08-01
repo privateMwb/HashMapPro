@@ -6,7 +6,7 @@
 // - combining operator[] with default-constructed values
 // - iterating results after processing
 
-#include <common/framework.h>
+#include <support/framework.h>
 
 #include <sstream>
 #include <string>

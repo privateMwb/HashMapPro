@@ -9,7 +9,7 @@
 // - a vector of maps is safely destroyed when cleared
 // - a map destroyed mid-scope does not affect a sibling map
 
-#include <common/framework.h>
+#include <support/framework.h>
 
 #include <string>
 #include <vector>

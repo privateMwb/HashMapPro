@@ -12,7 +12,7 @@
 //   element
 // - the map's size is unchanged after concurrent read-only access
 
-#include <common/framework.h>
+#include <support/framework.h>
 
 #include <atomic>
 #include <string>

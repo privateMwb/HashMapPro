@@ -7,7 +7,7 @@
 // - insertion that triggers a rehash
 // - equal-sized insertion that does not trigger a rehash
 
-#include <common/framework.h>
+#include <support/framework.h>
 
 #include <unordered_map>
 

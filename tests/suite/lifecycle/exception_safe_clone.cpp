@@ -11,7 +11,7 @@
 // - a destination left empty by a failed assignment remains usable
 // - cloning succeeds normally when no throw is configured
 
-#include <common/framework.h>
+#include <support/framework.h>
 
 #include <stdexcept>
 

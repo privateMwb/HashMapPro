@@ -10,7 +10,7 @@
 // - interleaved insert/erase/find operations agree on map state
 // - clearing after iteration leaves the map in a fresh, iterable state
 
-#include <common/framework.h>
+#include <support/framework.h>
 
 #include <string>
 #include <unordered_set>

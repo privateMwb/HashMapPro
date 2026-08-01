@@ -13,7 +13,7 @@
 // - clear followed by reinsertion
 // - insert triggers rehash growth past the max load factor
 
-#include <common/framework.h>
+#include <support/framework.h>
 
 #include <string>
 

@@ -6,7 +6,7 @@
 // - constructing a HashMap with a custom hash
 // - inserting and looking up custom keys
 
-#include <common/framework.h>
+#include <support/framework.h>
 
 #include <cstddef>
 #include <string>

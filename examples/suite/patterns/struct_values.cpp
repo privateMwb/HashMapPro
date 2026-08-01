@@ -5,7 +5,7 @@
 // - updating individual fields in place through operator[]
 // - reading back struct members after mutation
 
-#include <common/framework.h>
+#include <support/framework.h>
 
 #include <string>
 

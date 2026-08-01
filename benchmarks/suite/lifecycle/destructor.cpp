@@ -8,7 +8,7 @@
 // - destruction of an empty map
 // - destruction of a populated map
 
-#include <common/framework.h>
+#include <support/framework.h>
 
 #include <unordered_map>
 

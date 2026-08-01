@@ -11,7 +11,7 @@
 // - erasing the last remaining element in the whole map empties it
 // - erasing an already-erased key returns false without side effects
 
-#include <common/framework.h>
+#include <support/framework.h>
 
 #include <cstddef>
 #include <string>
