@@ -1,9 +1,17 @@
 /**
- * @file Node.h
- * @brief Internal node structure used by HashMap.
+ * @file            Node.h
  *
- * Contains the node implementation used internally by the HashMap
- * container for key-value storage and bucket chaining.
+ * @date            2026-16-7
+ *
+ * @version         1.0.0
+ *
+ * @copyright       Copyright (c) 2026 privateMwb
+ *                  All rights reserved.
+ *                  https://github.com/privateMwb/HashMapPro
+ *
+ * @attention       This source is released under the MIT license
+ *                  SPDX-License-Identifier: MIT
+ *                  <http://opensource.org/licenses/MIT>
  */
 
 #pragma once
