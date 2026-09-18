@@ -1,9 +1,17 @@
 /**
- * @file Iterator.h
- * @brief Iterator implementation for HashMap.
+ * @file            Iterator.h
  *
- * Contains the iterator types used by HashMap for traversing
- * elements stored within the container.
+ * @date            2026-16-7
+ *
+ * @version         1.0.0
+ *
+ * @copyright       Copyright (c) 2026 privateMwb
+ *                  All rights reserved.
+ *                  https://github.com/privateMwb/HashMapPro
+ *
+ * @attention       This source is released under the MIT license
+ *                  SPDX-License-Identifier: MIT
+ *                  <http://opensource.org/licenses/MIT>
  */
 
 #pragma once

@@ -5,7 +5,7 @@
  *
  * @version         1.0.0
  *
- * @copyright       Copyright (c) 2026 Your Name
+ * @copyright       Copyright (c) 2026 privateMwb
  *                  All rights reserved.
  *                  https://github.com/privateMwb/HashMapPro
  *
